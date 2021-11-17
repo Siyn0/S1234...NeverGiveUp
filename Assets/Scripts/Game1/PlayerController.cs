@@ -19,13 +19,18 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private BoxCollider2D isGroundCol;
 
-    /*    /// <summary>
+    public LayerMask GroundLayer;
+
+
+
+        /// <summary>
         /// 跳跃间隔
         /// </summary>
         public float JumpTime = 0.2f;
 
-        private float isJumpTime = 0.2f;//记录距离上次跳跃过去的时间*/
+        private float isJumpTime = 0f;//记录距离上次跳跃过去的时间*/
 
+    
     /*
         /// <summary>
         /// 攻击间隔
@@ -51,22 +56,25 @@ public class PlayerController : MonoBehaviour
             transform.position += new Vector3(-MoveSpeed, 0f, 0f);
         }
 
-        if(Input.GetAxis("Jump") > 0)
+        if((Input.GetAxis("Jump") > 0) && (isJumpTime >= JumpTime))
         {
-            if(isGroundCol.IsTouching())
+            if(isGroundCol.IsTouchingLayers(GroundLayer))
             {
+                Debug.Log("Jump");
                 transform.GetComponent<Rigidbody2D>().AddForce(Vector2.up * JumpForce);
+                isJumpTime = 0f;
             }
             
         }
 
-        /*
+        
         //跳跃计时器
         if(isJumpTime < JumpTime)
         {
             isJumpTime += 0.01f;
         }
-*//*
+
+        /*
         if (Input.GetAxis("Fire1") > 0)
         {
             if (isAttackTime >= AttackTime)
@@ -76,7 +84,7 @@ public class PlayerController : MonoBehaviour
                 isAttackTime = 0f;
             }
         }
-
+        
         //攻击计时器
         if (isAttackTime < AttackTime)
         {
