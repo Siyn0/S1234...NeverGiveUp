@@ -12,6 +12,7 @@ public class EnemyMove : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("碰撞");
         if(other.tag == "Player")
         {
             other.gameObject.GetComponent<Game3PlayerController>().LoseHP();

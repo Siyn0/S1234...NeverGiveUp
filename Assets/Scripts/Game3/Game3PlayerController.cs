@@ -37,6 +37,7 @@ public class Game3PlayerController : MonoBehaviour
 
     public void LoseHP()
     {
+        Debug.Log("掉血");
         HP -= 10;
         UpdateHP();
         if (HP <= 0)
