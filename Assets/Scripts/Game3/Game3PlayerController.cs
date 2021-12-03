@@ -5,34 +5,50 @@ using UnityEngine.UI;
 
 public class Game3PlayerController : MonoBehaviour
 {
-    public float MoveSpeed = 0.1f;
-    private int HP = 100;
+    public float MoveSpeed = 10f;
+    
+    private float HP = 100;
+
     public Image HPBar;
     public GameObject DiePanel;
 
+    private Vector2 MoveVector, RightVector, LeftVector, UpVector, DownVector;
+
+    private void Start()
+    {
+        MoveVector = new Vector2(0f,0f);
+        RightVector = new Vector2(MoveSpeed, 0f);
+        LeftVector = new Vector2(-MoveSpeed, 0f);
+        UpVector = new Vector2(0f, MoveSpeed);
+        DownVector = new Vector2(0f, -MoveSpeed);
+    }
     private void Update()
     {
         if(Input.GetAxis("Horizontal") > 0)
         {
-            transform.position += new Vector3(MoveSpeed, 0f, 0f);
+            MoveVector += RightVector;
         }
         if(Input.GetAxis("Horizontal") < 0)
         {
-            transform.position += new Vector3(-MoveSpeed, 0f, 0f);
+            MoveVector += LeftVector;
         }
         if(Input.GetAxis("Vertical") > 0)
         {
-            transform.position += new Vector3(0f, MoveSpeed, 0f);
+            MoveVector += UpVector;
         }
         if (Input.GetAxis("Vertical") < 0)
         {
-            transform.position += new Vector3(0f, -MoveSpeed, 0f);
+            MoveVector += DownVector;
         }
+
+        gameObject.GetComponent<Rigidbody2D>().AddForce(MoveVector);
+        MoveVector = Vector2.zero;
     }
 
     private void UpdateHP()
     {
-        HPBar.fillAmount = HP / 100;
+        HPBar.fillAmount = HP / 100f;
+        Debug.Log("HP:" + HP / 100f);
     }
 
     public void LoseHP()
