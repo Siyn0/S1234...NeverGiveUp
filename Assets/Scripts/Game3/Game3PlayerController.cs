@@ -5,14 +5,20 @@ using UnityEngine.UI;
 
 public class Game3PlayerController : MonoBehaviour
 {
-    public float MoveSpeed = 10f;
-    
-    private float HP = 100;
+    public float MoveSpeed = 10f;//移动速度（最初是用transform.position移动，
+                                 //现改为刚体，这个值是向刚体施加的力的大小）
+    public int FireTime = 10;//发射子弹的间隔时间
 
-    public Image HPBar;
-    public GameObject DiePanel;
+    private int CurrentTime = 0;//距离上一次发射子弹过去多久
 
-    private Vector2 MoveVector, RightVector, LeftVector, UpVector, DownVector;
+    private float HP = 100;//血量
+
+    public Image HPBar;//血条
+    public GameObject DiePanel;//死亡界面
+
+    public GameObject Bullet;//子弹的预制体
+
+    private Vector2 MoveVector, RightVector, LeftVector, UpVector, DownVector;//四个方向的向量
 
     private void Start()
     {
@@ -43,6 +49,19 @@ public class Game3PlayerController : MonoBehaviour
 
         gameObject.GetComponent<Rigidbody2D>().AddForce(MoveVector);
         MoveVector = Vector2.zero;
+    }
+
+    private void FixedUpdate()
+    {
+        if(CurrentTime < FireTime)
+        {
+            CurrentTime ++;
+        }
+        else
+        {
+            GameObject.Instantiate(Bullet,transform.position + new Vector3(5f,0f,0f), transform.rotation);
+            CurrentTime = 0;
+        }
     }
 
     private void UpdateHP()
